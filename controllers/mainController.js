@@ -101,10 +101,15 @@ const handlePostback = (sender_psid, received_postback) => {
 	// Get the payload for the postback
 	let payload = received_postback.payload;
 	// Set the response based on the postback payload
-	if (payload === 'yes') {
-		response = { text: 'Thanks!' };
-	} else if (payload === 'no') {
-		response = { text: 'Oops, try sending another image.' };
+	switch (payload) {
+		case 'yes':
+			response = { text: 'Cảm ơn!' };
+			break;
+		case 'no':
+			response = { text: 'Oops, xin lỗi!' };
+			break;
+		default:
+			response = { text: 'Xin lỗi! Tôi không hiểu đáp án của bạn' };
 	}
 	// Send the message to acknowledge the postback
 	callSendAPI(sender_psid, response);

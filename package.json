@@ -1,5 +1,5 @@
 {
-  "name": "anthome-nodejs",
+  "name": "laphoalung_bot",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
@@ -21,8 +20,7 @@
     "nodemailer": "^6.9.1",
     "nodemailer-express-handlebars": "^6.1.0",
     "nodemon": "^2.0.20",
-    "request": "^2.88.2",
-    "sequelize": "^6.28.0"
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "eslint": "^8.37.0",
@@ -30,7 +28,6 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-security": "^1.7.1",
-    "prettier": "^2.8.7",
-    "sequelize-cli": "^6.6.0"
+    "prettier": "^2.8.7"
   }
 }
