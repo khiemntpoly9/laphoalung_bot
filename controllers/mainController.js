@@ -14,7 +14,7 @@ const mailController = {
 			// Check the mode and token sent is correct
 			if (mode === 'subscribe' && token === VERIFY_TOKEN) {
 				// Respond with the challenge token from the request
-				console.log('WEBHOOK_VERIFIED');
+				// console.log('WEBHOOK_VERIFIED');
 				res.status(200).send(challenge);
 			} else {
 				// Respond with '403 Forbidden' if verify tokens do not match
@@ -30,10 +30,10 @@ const mailController = {
 			// Iterate over each entry - there may be multiple if batched
 			body.entry.forEach(function (entry) {
 				let webhook_event = entry.messaging[0];
-				console.log(webhook_event);
+				// console.log(webhook_event);
 				// Get the sender PSID
 				let sender_psid = webhook_event.sender.id;
-				console.log('Sender PSID: ' + sender_psid);
+				// console.log('Sender PSID: ' + sender_psid);
 				// Check if the event is a message or postback and
 				// pass the event to the appropriate handler function
 				if (webhook_event.message) {
