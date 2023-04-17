@@ -1,10 +1,15 @@
+/* eslint-disable no-case-declarations */
 /* eslint-disable no-undef */
 const request = require('request');
+const { callSendAPI, getUserInfo } = require('../services/chatbotService');
 require('dotenv').config();
+//
+const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+//
 const mailController = {
 	// Get webhook
 	getWebhook: async (req, res) => {
-		const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 		// Parse the query params
 		let mode = req.query['hub.mode'];
 		let token = req.query['hub.verify_token'];
@@ -30,12 +35,7 @@ const mailController = {
 			// Iterate over each entry - there may be multiple if batched
 			body.entry.forEach(function (entry) {
 				let webhook_event = entry.messaging[0];
-				// console.log(webhook_event);
-				// Get the sender PSID
 				let sender_psid = webhook_event.sender.id;
-				// console.log('Sender PSID: ' + sender_psid);
-				// Check if the event is a message or postback and
-				// pass the event to the appropriate handler function
 				if (webhook_event.message) {
 					handleMessage(sender_psid, webhook_event.message);
 				} else if (webhook_event.postback) {
@@ -51,48 +51,33 @@ const mailController = {
 	},
 };
 
-const handleMessage = (sender_psid, received_message) => {
+const handleMessage = async (sender_psid, received_message) => {
 	let response;
-
+	// Lấy thông tin user
+	const user = await new Promise((resolve, reject) => {
+		getUserInfo(sender_psid, (user) => {
+			resolve(user);
+		});
+	});
 	// Checks if the message contains text
+	let greetings = ['hello', 'hi', 'hey'];
 	if (received_message.text) {
-		// Create the payload for a basic text message, which
-		// will be added to the body of our request to the Send API
-		response = {
-			text: `You sent the message: "${received_message.text}". Now send me an attachment!`,
-		};
+		// Chào mừng
+		if (greetings.includes(received_message.text)) {
+			response = {
+				text: `Chào ${user.first_name}, mình có thể giúp gì cho bạn? 😆`,
+			};
+		} else {
+			response = {
+				text: `Xin lỗi ${user.first_name}, mình chỉ là một con bot, mình không hiểu được những từ ngữ phức tạp!`,
+			};
+		}
 	} else if (received_message.attachments) {
-		// Get the URL of the message attachment
-		let attachment_url = received_message.attachments[0].payload.url;
 		response = {
-			attachment: {
-				type: 'template',
-				payload: {
-					template_type: 'generic',
-					elements: [
-						{
-							title: 'Is this the right picture?',
-							subtitle: 'Tap a button to answer.',
-							image_url: attachment_url,
-							buttons: [
-								{
-									type: 'postback',
-									title: 'Yes!',
-									payload: 'yes',
-								},
-								{
-									type: 'postback',
-									title: 'No!',
-									payload: 'no',
-								},
-							],
-						},
-					],
-				},
-			},
+			text: `Xin lỗi, mình không hiểu được tệp này!`,
 		};
 	}
-	// Send the response message
+	// Gọi hàm gửi tin nhắn
 	callSendAPI(sender_psid, response);
 };
 
@@ -113,32 +98,6 @@ const handlePostback = (sender_psid, received_postback) => {
 	}
 	// Send the message to acknowledge the postback
 	callSendAPI(sender_psid, response);
-};
-
-const callSendAPI = (sender_psid, response) => {
-	// Construct the message body
-	let request_body = {
-		recipient: {
-			id: sender_psid,
-		},
-		message: response,
-	};
-	// Send the HTTP request to the Messenger Platform
-	request(
-		{
-			uri: 'https://graph.facebook.com/v2.6/me/messages',
-			qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
-			method: 'POST',
-			json: request_body,
-		},
-		(err, res, body) => {
-			if (!err) {
-				console.log('Đã gửi tin nhắn!');
-			} else {
-				console.error('Không thể gửi tin nhắn:' + err);
-			}
-		},
-	);
 };
 
 module.exports = mailController;
