@@ -3,9 +3,10 @@
   "version": "1.0.2",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon --inspect app.js"
+    "dev": "nodemon --exec babel-node src/app.js"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +24,10 @@
     "request": "^2.88.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.4",
+    "@babel/node": "^7.20.7",
+    "@babel/preset-env": "^7.21.4",
     "eslint": "^8.37.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.27.5",

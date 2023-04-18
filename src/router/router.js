@@ -1,7 +1,7 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
+import mailController from '../controllers/mainController.js';
 
-const mailController = require('../controllers/mainController');
+const router = express.Router();
 
 router.get('/', (req, res) => {
 	res.send('Server đang chạy trên Port 3000!');
@@ -10,4 +10,4 @@ router.get('/', (req, res) => {
 router.get('/webhook', mailController.getWebhook);
 router.post('/webhook', mailController.postWebhook);
 
-module.exports = router;
+export default router;

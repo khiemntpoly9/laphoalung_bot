@@ -1,7 +1,9 @@
-/* eslint-disable no-async-promise-executor */
 /* eslint-disable no-undef */
-const request = require('request');
-require('dotenv').config();
+import request from 'request';
+import * as dotenv from 'dotenv';
+// .ENV
+dotenv.config();
+
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 //
 const getUserInfo = (sender_psid, callback) => {
@@ -48,4 +50,4 @@ let callSendAPI = (sender_psid, response) => {
 	);
 };
 
-module.exports = { callSendAPI, getUserInfo };
+export { callSendAPI, getUserInfo };

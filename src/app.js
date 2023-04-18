@@ -1,9 +1,10 @@
-const express = require('express');
-const router = require('./router/router');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
+import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import * as dotenv from 'dotenv';
+import router from './router/router.js';
 // .ENV
-require('dotenv').config();
+dotenv.config();
 
 const app = express();
 
@@ -19,7 +20,6 @@ app.use(cookieParser());
 
 // routes
 app.use(router);
-
 // error handling middleware
 app.use((err, req, res, next) => {
 	console.error(err.stack);

@@ -1,8 +1,10 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable no-undef */
-const request = require('request');
-const { callSendAPI, getUserInfo } = require('../services/chatbotService');
-require('dotenv').config();
+import request from 'request';
+import { callSendAPI, getUserInfo } from '../services/chatbotService.js';
+import * as dotenv from 'dotenv';
+// .ENV
+dotenv.config();
 //
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
@@ -100,4 +102,4 @@ const handlePostback = (sender_psid, received_postback) => {
 	callSendAPI(sender_psid, response);
 };
 
-module.exports = mailController;
+export default mailController;
